@@ -1,4 +1,4 @@
-package com.example.seoul.domain.controller;
+package com.example.seoul.controller;
 
 import com.example.seoul.service.SubwayStationService;
 import lombok.RequiredArgsConstructor;
