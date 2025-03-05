@@ -27,8 +27,8 @@ public class Board {
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "subway_id")
-    private Subway subway;
+    @JoinColumn(name = "subwayStation_id")
+    private SubwayStation subwayStation;
 
     @ManyToOne
     @JoinColumn(name = "tag_id")
