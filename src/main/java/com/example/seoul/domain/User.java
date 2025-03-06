@@ -1,23 +1,32 @@
 package com.example.seoul.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @Column(nullable = false, unique = true)
+    private String email;
 
-    private String sex;
+    @Column(nullable = false)
+    private String nickname;
 
-    private int age;
+    private String profileImage;
+
+    @Column(nullable = false)
+    private boolean isKakaoUser;
+
+    private String password; // 카카오 회원이면 null
+
 }
+
