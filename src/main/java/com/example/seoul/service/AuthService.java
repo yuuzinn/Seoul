@@ -42,7 +42,7 @@ public class AuthService {
             user = optionalUser.get();
         }
 
-        session.setAttribute("loginUser", user);
+        session.setAttribute("user", user);
 
         return user;
     }

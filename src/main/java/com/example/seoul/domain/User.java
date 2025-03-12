@@ -39,6 +39,13 @@ public class User {
         this.profileImage = profileImage;
         this.isKakaoUser = isKakaoUser;
     }
+    @Builder
+    public User(String email, String nickname, String profileImage, Boolean isKakaoUser) {
+        this.email = email;
+        this.nickname = nickname;
+        this.profileImage = profileImage;
+        this.isKakaoUser = isKakaoUser;
+    }
 
     // 닉네임 수정 등 메서드 추가 가능!
 }

@@ -1,5 +1,6 @@
 package com.example.seoul.controller;
 
+import com.example.seoul.common.LoginCheck;
 import com.example.seoul.domain.User;
 import com.example.seoul.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,11 +35,13 @@ public class AuthController {
     @GetMapping("/login/kakao")
     public RedirectView kakaoLogin(@RequestParam("code") String code, HttpServletRequest request) {
         HttpSession session = request.getSession();
+        session.setAttribute("user", code);
         authService.kakaoLogin(code, session);
         return new RedirectView("/");
     }
 
     @GetMapping("/logout")
+    @LoginCheck
     public RedirectView logout(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         if (session != null) {
@@ -51,10 +54,10 @@ public class AuthController {
     public ResponseEntity<?> checkSession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
         System.out.println("session = " + session);
-        if (session == null || session.getAttribute("loginUser") == null) {
+        if (session == null || session.getAttribute("user") == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 안됨");
         }
-        User user = (User) session.getAttribute("loginUser");
+        User user = (User) session.getAttribute("user");
         return ResponseEntity.ok().body(user);
     }
 }
