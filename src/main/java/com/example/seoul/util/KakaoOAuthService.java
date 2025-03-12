@@ -1,4 +1,4 @@
-package com.example.seoul.service;
+package com.example.seoul.util;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

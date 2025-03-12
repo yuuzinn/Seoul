@@ -1,8 +1,8 @@
-package com.example.seoul.controller;
+package com.example.seoul.util;
 
 import com.example.seoul.common.LoginCheck;
 import com.example.seoul.domain.User;
-import com.example.seoul.service.AuthService;
+import com.example.seoul.util.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;

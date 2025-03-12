@@ -1,7 +1,7 @@
-package com.example.seoul.service;
+package com.example.seoul.util;
 
 import com.example.seoul.domain.User;
-import com.example.seoul.repository.UserRepository;
+import com.example.seoul.user.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

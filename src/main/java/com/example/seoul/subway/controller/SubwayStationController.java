@@ -1,6 +1,6 @@
-package com.example.seoul.controller;
+package com.example.seoul.subway.controller;
 
-import com.example.seoul.service.SubwayStationService;
+import com.example.seoul.subway.service.SubwayStationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

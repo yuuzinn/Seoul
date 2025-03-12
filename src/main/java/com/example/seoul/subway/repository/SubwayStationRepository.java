@@ -1,4 +1,4 @@
-package com.example.seoul.repository;
+package com.example.seoul.subway.repository;
 
 import com.example.seoul.domain.SubwayStation;
 import org.springframework.data.jpa.repository.JpaRepository;
