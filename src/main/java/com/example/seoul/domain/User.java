@@ -14,7 +14,7 @@ public class User {
     private Long id;
 
     @Column(nullable = true, unique = true, length = 30)
-    private String username;
+    private String userName;
 
     @Column(nullable = false, unique = true)
     private String email;
@@ -32,7 +32,7 @@ public class User {
     // 생성자 (필수 필드만)
     @Builder
     public User(String username, String password, String nickname, String email, String profileImage, Boolean isKakaoUser) {
-        this.username = username;
+        this.userName = username;
         this.password = password;
         this.nickname = nickname;
         this.email = email;

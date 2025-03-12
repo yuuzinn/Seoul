@@ -53,7 +53,6 @@ public class AuthController {
     @GetMapping("/session")
     public ResponseEntity<?> checkSession(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        System.out.println("session = " + session);
         if (session == null || session.getAttribute("user") == null) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인 안됨");
         }
