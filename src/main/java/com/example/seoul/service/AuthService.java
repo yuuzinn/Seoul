@@ -31,7 +31,6 @@ public class AuthService {
         User user;
 
         if (optionalUser.isEmpty()) {
-            // 4. 신규 회원이면 저장
             user = User.builder()
                     .email(email)
                     .nickname(nickname)
