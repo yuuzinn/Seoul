@@ -1,6 +1,8 @@
 package com.example.seoul.domain;
 
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -8,19 +10,29 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Photo {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    @OneToOne(fetch = FetchType.LAZY)
+    private Review review;
 
-    private LocalDateTime createdAt;
+    @Column(nullable = false)
+    private String imageUrl;
 
-    @PrePersist
-    public void prePersist() {
-        this.createdAt = LocalDateTime.now();
+    private String fileName;
+
+    private LocalDateTime uploadedAt;
+
+    @Builder
+    public Photo(Review review, String imageUrl, String fileName) {
+        this.review = review;
+        this.imageUrl = imageUrl;
+        this.fileName = fileName;
+        this.uploadedAt = LocalDateTime.now();
     }
 }
+
