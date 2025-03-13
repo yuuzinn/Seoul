@@ -19,11 +19,12 @@ public class Like {
     private User user;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Review review;
+    private Post post;
 
     @Builder
-    public Like(User user, Review review) {
+    public Like(User user, Post post) {
         this.user = user;
-        this.review = review;
+        this.post = post;
     }
 }
+

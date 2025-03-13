@@ -9,21 +9,22 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class ReviewTag {
+public class PostTag {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    private Review review;
+    private Post post;
 
     @ManyToOne(fetch = FetchType.LAZY)
     private Tag tag;
 
     @Builder
-    public ReviewTag(Review review, Tag tag) {
-        this.review = review;
+    public PostTag(Post post, Tag tag) {
+        this.post = post;
         this.tag = tag;
     }
 }
+
