@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void login(User request) {
+    public User login(User request) {
         String requestPassword = request.getPassword();
         Optional<User> user = userRepository.findByUserName(request.getUserName());
         if (user.isEmpty()) {
@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService{
         if (!isSamePassword(requestPassword, dbPassword)) {
             throw new IllegalArgumentException("NOT SAME PASSWORD");
         }
-
+        return user.get();
     }
 
     public boolean isSamePassword(String password, String dbUserPassword) {

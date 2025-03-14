@@ -14,7 +14,7 @@ public interface UserService {
     /**
      * 로그인
      */
-    void login(User request);
+    User login(User request);
 
 
     /**

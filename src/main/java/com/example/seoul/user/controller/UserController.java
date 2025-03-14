@@ -1,6 +1,7 @@
 package com.example.seoul.user.controller;
 
 import com.example.seoul.common.LoginCheck;
+import com.example.seoul.domain.User;
 import com.example.seoul.user.request.LoginRequest;
 import com.example.seoul.user.request.SignUpRequest;
 import com.example.seoul.user.service.UserService;
@@ -32,8 +33,8 @@ public class UserController {
             @RequestBody LoginRequest request,
             HttpSession session
             ) {
-        userService.login(request.toEntity());
-        session.setAttribute("user", request.toEntity());
+        User user = userService.login(request.toEntity());
+        session.setAttribute("user", user);
         return ResponseEntity.ok("성공");
     }
 
