@@ -26,8 +26,8 @@ public class PoiSearchResponseDto {
             private String middleAddrName;  // 주소(구/군)
             private String lowerAddrName;   // 주소(동/읍/면)
             private String roadName;        // 도로명 주소
-            private String buildingNo1;     // 건물번호1
-            private String buildingNo2;     // 건물번호2
+            private String firstBuildNo;     // 건물번호1
+            private String secondBuildNo;     // 건물번호2
         }
     }
 }
