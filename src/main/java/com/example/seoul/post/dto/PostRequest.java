@@ -15,7 +15,7 @@ public class PostRequest {
     @NotBlank
     private String content;
 
-    private List<String> subwayTags;
+    private String subwayTag;
 
     private List<String> moodTags;
 }

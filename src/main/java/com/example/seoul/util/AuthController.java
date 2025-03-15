@@ -35,8 +35,10 @@ public class AuthController {
     @GetMapping("/login/kakao")
     public RedirectView kakaoLogin(@RequestParam("code") String code, HttpServletRequest request) {
         HttpSession session = request.getSession();
-        session.setAttribute("user", code);
-        authService.kakaoLogin(code, session);
+//        session.setAttribute("user", code);
+        User user = authService.kakaoLogin(code, session);
+        session.setAttribute("user", user);
+
         return new RedirectView("/");
     }
 
