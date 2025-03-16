@@ -23,22 +23,22 @@ public class PostPlaceServiceImpl implements PostPlaceService{
         return tmapPoiSearchClient.searchPoi(keyword, count);
     }
 
-    @Override
-    @Transactional
-    public void addPostPlace(PostPlaceRequest request) {
-        Post post = postRepository.findById(request.getPostId())
-                .orElseThrow(() -> new IllegalArgumentException("NOT FOUND POST."));
-
-        PostPlace postPlace = PostPlace.builder()
-                .post(post)
-                .placeName(request.getPlaceName())
-                .latitude(request.getLatitude())
-                .longitude(request.getLongitude())
-                .description(request.getDescription())
-                .imageUrl(request.getImageUrl())
-                .placeOrder(request.getPlaceOrder())
-                .build();
-
-        postPlaceRepository.save(postPlace);
-    }
+//    @Override
+//    @Transactional
+//    public void addPostPlace(PostPlaceRequest request) {
+//        Post post = postRepository.findById(request.getPostId())
+//                .orElseThrow(() -> new IllegalArgumentException("NOT FOUND POST."));
+//
+//        PostPlace postPlace = PostPlace.builder()
+//                .post(post)
+//                .placeName(request.getPlaceName())
+//                .latitude(request.getLatitude())
+//                .longitude(request.getLongitude())
+//                .description(request.getDescription())
+//                .imageUrl(request.getImageUrl())
+//                .placeOrder(request.getPlaceOrder())
+//                .build();
+//
+//        postPlaceRepository.save(postPlace);
+//    }
 }

@@ -44,4 +44,14 @@ public class PostPlace {
         this.imageUrl = imageUrl;
         this.placeOrder = placeOrder;
     }
+
+    public void update(String placeName, double latitude, double longitude, String description, String imageUrl, int placeOrder) {
+        this.placeName = placeName;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.description = description;
+        this.imageUrl = imageUrl;
+        this.placeOrder = placeOrder;
+    }
+
 }

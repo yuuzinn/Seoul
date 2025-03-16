@@ -6,8 +6,6 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class PostPlaceRequest {
-
-    private Long postId;
     private String placeName;
     private double latitude;
     private double longitude;

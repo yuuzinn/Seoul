@@ -24,10 +24,10 @@ public class PostPlaceController {
         return ResponseEntity.ok(result);
     }
 
-    @PostMapping("/add")
-    @LoginCheck
-    public ResponseEntity<String> addPostPlace(@RequestBody PostPlaceRequest request) {
-        postPlaceService.addPostPlace(request);
-        return ResponseEntity.ok("장소 추가");
-    }
+//    @PostMapping("/add")
+//    @LoginCheck
+//    public ResponseEntity<String> addPostPlace(@RequestBody PostPlaceRequest request) {
+//        postPlaceService.addPostPlace(request);
+//        return ResponseEntity.ok("장소 추가");
+//    }
 }

@@ -6,7 +6,5 @@ import org.springframework.stereotype.Service;
 
 @Service
 public interface PostPlaceService {
-    void addPostPlace(PostPlaceRequest request);
-
     PoiSearchResponseDto searchPoi(String keyword, int count);
 }
