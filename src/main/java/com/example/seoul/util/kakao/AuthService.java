@@ -1,4 +1,4 @@
-package com.example.seoul.util;
+package com.example.seoul.util.kakao;
 
 import com.example.seoul.domain.User;
 import com.example.seoul.user.repository.UserRepository;

@@ -1,4 +1,4 @@
-package com.example.seoul.util;
+package com.example.seoul.util.kakao;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
