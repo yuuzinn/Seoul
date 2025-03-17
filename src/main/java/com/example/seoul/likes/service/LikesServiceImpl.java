@@ -3,6 +3,8 @@ package com.example.seoul.likes.service;
 import com.example.seoul.domain.Likes;
 import com.example.seoul.domain.Post;
 import com.example.seoul.domain.User;
+import com.example.seoul.exception.CustomException;
+import com.example.seoul.exception.ErrorCode;
 import com.example.seoul.likes.repository.LikesRepository;
 import com.example.seoul.post.repository.PostRepository;
 import com.example.seoul.user.repository.UserRepository;
@@ -18,14 +20,15 @@ public class LikesServiceImpl implements LikesService{
     private final UserRepository userRepository;
 
     @Transactional
+    @Override
     public void likePost(Long userId, Long postId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("NOT FOUND USER"));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("NOT FOUND POST"));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 
         if (likesRepository.existsByUserAndPost(user, post)) {
-            throw new IllegalArgumentException("이미 좋아요를 눌렀습니다.");
+            throw new CustomException(ErrorCode.ALREADY_LIKES);
         }
 
         likesRepository.save(new Likes(user, post));
@@ -33,14 +36,15 @@ public class LikesServiceImpl implements LikesService{
     }
 
     @Transactional
+    @Override
     public void unlikePost(Long userId, Long postId) {
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("NOT FOUND USER"));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("NOT FOUND POST"));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 
         Likes like = likesRepository.findByUserAndPost(user, post)
-                .orElseThrow(() -> new IllegalArgumentException("좋아요한 기록이 없습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_LIKES));
 
         likesRepository.delete(like);
         post.decreaseLikeCount();

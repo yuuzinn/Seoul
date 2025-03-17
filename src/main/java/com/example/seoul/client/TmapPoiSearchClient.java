@@ -1,5 +1,7 @@
 package com.example.seoul.client;
 
+import com.example.seoul.exception.CustomException;
+import com.example.seoul.exception.ErrorCode;
 import com.example.seoul.place.dto.PoiSearchResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -61,7 +63,7 @@ public class TmapPoiSearchClient {
         );
         if (response.getStatusCode() != HttpStatus.OK) {
             log.error("TMAP POI 검색 실패: {}", response.getStatusCode());
-            throw new IllegalArgumentException("POI SEARCH FAIL");
+            throw new CustomException(ErrorCode.POT_SEARCH_FAIL);
         }
 
         return response.getBody();

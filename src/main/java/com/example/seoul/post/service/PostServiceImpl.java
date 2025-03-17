@@ -2,6 +2,8 @@ package com.example.seoul.post.service;
 
 import com.example.seoul.domain.*;
 import com.example.seoul.domain.type.TagType;
+import com.example.seoul.exception.CustomException;
+import com.example.seoul.exception.ErrorCode;
 import com.example.seoul.likes.repository.LikesRepository;
 import com.example.seoul.place.dto.PostPlaceRequest;
 import com.example.seoul.place.repository.PostPlaceRepository;
@@ -123,7 +125,7 @@ public class PostServiceImpl implements PostService {
     @Transactional(readOnly = true)
     public PostDetailResponse getPostDetail(Long postId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 글이 없습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 
         // 지하철 태그 가져오기
         String subwayTag = postTagRepository.findSubwayTagByPostId(post.getId());
@@ -167,19 +169,16 @@ public class PostServiceImpl implements PostService {
     @Transactional
     public void deletePost(Long postId, Long userId) {
         Post post = postRepository.findById(postId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 글이 없습니다."));
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_POST));
 
-        // 1. 작성자 확인
         if (!post.getUser().getId().equals(userId)) {
-            throw new IllegalArgumentException("삭제 권한이 없습니다.");
+            throw new CustomException(ErrorCode.FORBIDDEN_ACCESS);
         }
 
-        // 2. 연결된 엔티티 삭제
         postTagRepository.deleteByPost(post);
         postPlaceRepository.deleteByPost(post);
         likesRepository.deleteByPost(post);
 
-        // 3. 글 삭제
         postRepository.delete(post);
     }
 
@@ -187,7 +186,7 @@ public class PostServiceImpl implements PostService {
 
     private void validateSubwayTag(String subwayTag) {
         if (!subwayStationRepository.existsByStationName(subwayTag)) {
-            throw new IllegalArgumentException("NOT FOUND SUBWAY_NAME: " + subwayTag);
+            throw new CustomException(ErrorCode.NOT_FOUND_SUBWAY);
         }
     }
 
@@ -234,7 +233,7 @@ public class PostServiceImpl implements PostService {
 
     private void savePostPlaces(Post post, List<PostPlaceRequest> placeRequests) {
         if (placeRequests == null || placeRequests.isEmpty()) {
-            throw new IllegalArgumentException("장소는 최소 2개 이상이어야 합니다.");
+            throw new CustomException(ErrorCode.SHOULD_2_OR_MORE_PLACES);
         }
 
         List<PostPlace> postPlaces = placeRequests.stream()

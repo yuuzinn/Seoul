@@ -3,6 +3,8 @@ package com.example.seoul.util.aws;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.example.seoul.exception.CustomException;
+import com.example.seoul.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -28,7 +30,7 @@ public class S3Service {
         try {
             amazonS3.putObject(bucketName, fileName, file.getInputStream(), metadata);
         } catch (IOException e) {
-            throw new IllegalArgumentException("이미지 업로드 실패");
+            throw new CustomException(ErrorCode.IMAGE_UPLOAD_FAIL);
         }
 
         amazonS3.setObjectAcl(bucketName, fileName, CannedAccessControlList.PublicRead);

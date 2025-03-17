@@ -1,5 +1,7 @@
 package com.example.seoul.common;
 
+import com.example.seoul.exception.CustomException;
+import com.example.seoul.exception.ErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -14,7 +16,7 @@ public class LoginInterceptor implements HandlerInterceptor {
         if (handler instanceof HandlerMethod && ((HandlerMethod) handler).hasMethodAnnotation(LoginCheck.class)) {
             HttpSession session = request.getSession();
             if (session == null || session.getAttribute("user") == null) {
-                throw new IllegalArgumentException("NOT LOGIN");
+                throw new CustomException(ErrorCode.NOT_LOGIN);
             }
         }
         return HandlerInterceptor.super.preHandle(request, response, handler);

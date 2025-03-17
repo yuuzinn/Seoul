@@ -12,7 +12,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TagServiceImpl implements TagService{
     private final TagRepository tagRepository;
-
+    @Override
     public List<String> getTagsByType(TagType type) {
         return tagRepository.findByType(type)
                 .stream()
