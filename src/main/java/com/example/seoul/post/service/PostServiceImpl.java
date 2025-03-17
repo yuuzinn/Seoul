@@ -130,7 +130,7 @@ public class PostServiceImpl implements PostService {
 
         // 분위기 태그 가져오기
         List<String> moodTags = postTagRepository.findTagNamesByPostId(post.getId());
-
+        moodTags.remove(subwayTag);
         // 장소 목록 가져오기
         List<PostPlace> places = postPlaceRepository.findByPostOrderByPlaceOrderAsc(post);
         List<PostPlaceResponse> placeResponses = places.stream()
