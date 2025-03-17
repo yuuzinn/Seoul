@@ -15,7 +15,7 @@ public class PostPlaceController {
     private final PostPlaceService postPlaceService;
 
     @GetMapping("/search")
-    @LoginCheck
+//    @LoginCheck
     public ResponseEntity<PoiSearchResponseDto> searchPoi(
             @RequestParam String keyword,
             @RequestParam(defaultValue = "5") int count
