@@ -1,10 +1,11 @@
-package com.example.seoul.service;
+package com.example.seoul.subway.service;
 
 import com.example.seoul.domain.SubwayStation;
-import com.example.seoul.repository.SubwayStationRepository;
+import com.example.seoul.subway.repository.SubwayStationRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
@@ -20,10 +21,14 @@ public class SubwayStationService {
     private final SubwayStationRepository subwayStationRepository;
     private final ObjectMapper objectMapper;
 
-    private static final String API_URL = "http://openapi.seoul.go.kr:8088//json/subwayStationMaster/1/1000/";
+    @Value("${subway.api.key}")
+    private String SUBWAY_KEY;
+
+    private static final String API_URL = "http://openapi.seoul.go.kr:8088/%s/json/subwayStationMaster/1/1000/";
 
     public void fetchAndSaveSubwayStations() throws Exception {
-        String json = getJsonFromApi(API_URL);
+        String formattedUrl = String.format(API_URL, SUBWAY_KEY);
+        String json = getJsonFromApi(formattedUrl);
         List<SubwayStation> stations = parseJson(json);
         subwayStationRepository.saveAll(stations);
     }
