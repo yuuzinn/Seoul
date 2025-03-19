@@ -14,6 +14,7 @@ public enum ErrorCode {
     SHOULD_2_OR_MORE_PLACES(1003, HttpStatus.BAD_REQUEST, "장소는 최소 두 개 이상이어야 합니다."),
     ALREADY_USER(1004, HttpStatus.BAD_REQUEST, "이미 사용하고 있는 유저가 있습니다."),
     NOT_SAME_PASSWORD(1005, HttpStatus.BAD_REQUEST, "비밀번호가 맞지 않습니다."),
+    INVALID_COORDINATE_FORMAT_IN_RESPONSE(1006, HttpStatus.BAD_REQUEST, "응답의 좌표 형식이 잘못됐습니다."),
     /**
      * 인증 실패
      */

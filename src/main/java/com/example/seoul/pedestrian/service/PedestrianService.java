@@ -1,6 +1,8 @@
 package com.example.seoul.pedestrian.service;
 
 import com.example.seoul.client.TmapPedestrianRouteClient;
+import com.example.seoul.exception.CustomException;
+import com.example.seoul.exception.ErrorCode;
 import com.example.seoul.pedestrian.dto.PedestrianRouteResponse;
 import com.example.seoul.pedestrian.dto.TmapPedestrianRouteRequest;
 import com.example.seoul.pedestrian.dto.TmapPedestrianRouteResponse;
@@ -38,7 +40,7 @@ public class PedestrianService {
                             latitude = pointCoords.get(1);
                         }
                     } else {
-                        throw new IllegalStateException("Invalid coordinate format in Tmap response");
+                        throw new CustomException(ErrorCode.INVALID_COORDINATE_FORMAT_IN_RESPONSE);
                     }
                     return new PedestrianRouteResponse.PointRoute(
                             latitude,
