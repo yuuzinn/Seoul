@@ -1,5 +1,15 @@
-![image](https://github.com/user-attachments/assets/b2afda80-e524-45da-98a2-f7dd9ec60d8f) <!-- 글 상세 보기 화면 -->
+# Seoul 놀먹
+
+### 개발하게 된 계기와 간단한 소개
+요즘 SNS에서 10대부터 30대까지 놀거리 및 먹거리를 많이 홍보하고 있습니다. 하지만 ***광고 기반에 따라 만들어진 홍보들이 많다 보니, 막상 기대를 안고 가보면 실망하는 사람들이 꽤나 많습니다.*** 그에 따라 사람들이 직접 가보고, 근처에 더 가볼만한 코스를 정해서 직접 추천해줄 수 있는 서비스를 개발하게 되었습니다.
+
+`Seoul 놀먹`은 서울시 내에서 한정되어 있으며, 대중교통(지하철)으로 많이 이용하기 때문에 ***지하철역을 기준으로 하여 코스들을 보여줍니다.***
+
+유저는 간단하게 작성되어 있는 옆으로 넘기는 슬라이드 형식의 카드일기 형식의 글을 볼 수 있습니다. 마지막 장에는 글의 장소 순서대로 경로를 추천하여 보여줄 수 있습니다.
+
+
 ![image](https://github.com/user-attachments/assets/086b8ddf-dad4-43b8-97e1-31db3385c387) <!-- 로그인 화면   -->
+![image](https://github.com/user-attachments/assets/b2afda80-e524-45da-98a2-f7dd9ec60d8f) <!-- 글 상세 보기 화면 -->
 ![image](https://github.com/user-attachments/assets/17849ad2-ee12-47de-bbf8-d89ebe297964) <!-- 지하철역 검색 -->
 ![image](https://github.com/user-attachments/assets/1aeaa11e-667f-4935-91be-af39769c055a) <!-- 검색 & 위치기반 추천 -->
 ![image](https://github.com/user-attachments/assets/21101888-7e89-4d3b-950e-b1febfe1facc) <!-- 내 정보 -->
@@ -8,7 +18,7 @@
 - Stack
   - Java 21, Spring Boot 3.3.9, JPA, Spring Security Crypto, MariaDB, AWS S3, Open API
 
-- 기능
+- 기능 (v1)
   - User
     - 프로젝트 내의 회원가입, 로그인, 로그아웃 및 유저 프로필 사진 업로드
     - 카카오 소셜 로그인(회원가입) email, username 정보 수집
