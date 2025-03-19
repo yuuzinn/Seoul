@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -64,15 +65,15 @@ public class PostServiceImpl implements PostService {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new IllegalArgumentException("해당 글이 없습니다."));
 
-        // 1️⃣ 작성자 검증
+        // 작성자 검증
         if (!post.getUser().getId().equals(userId)) {
             throw new IllegalArgumentException("수정 권한이 없습니다.");
         }
 
-        // 2️⃣ Post 기본 정보 수정
+        // Post 기본 정보 수정
         post.update(request.getTitle(), request.getContent());
 
-        // 3️⃣ 무드 태그 업데이트
+        // 무드 태그 업데이트
         List<PostTag> existingTags = postTagRepository.findAllByPost(post);
         List<String> newTagNames = request.getMoodTags();
 
@@ -93,7 +94,7 @@ public class PostServiceImpl implements PostService {
 
         postTagRepository.saveAll(newTags);
 
-        // 4️⃣ 장소 업데이트 (기존 장소 유지, 순서 변경 반영)
+        //  장소 업데이트 (기존 장소 유지, 순서 변경 반영)
         List<PostPlace> existingPlaces = postPlaceRepository.findByPostOrderByPlaceOrderAsc(post);
         List<PostPlaceRequest> placeRequests = request.getPostPlaces();
 
@@ -182,6 +183,17 @@ public class PostServiceImpl implements PostService {
         postRepository.delete(post);
     }
 
+    @Override
+    public List<PostResponse> getMyPosts(Long userId, Long lastId) {
+        List<Post> posts = postRepository.findMyPosts(userId, lastId);
+        return posts.stream().map(PostResponse::fromEntity).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<PostResponse> getLikedPosts(Long userId, Long lastId) {
+        List<Post> posts = likesRepository.findLikedPosts(userId, lastId);
+        return posts.stream().map(PostResponse::fromEntity).collect(Collectors.toList());
+    }
 
 
     private void validateSubwayTag(String subwayTag) {

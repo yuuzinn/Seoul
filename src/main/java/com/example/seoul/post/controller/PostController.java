@@ -1,17 +1,22 @@
 package com.example.seoul.post.controller;
 
 import com.example.seoul.common.LoginCheck;
+import com.example.seoul.domain.Post;
 import com.example.seoul.domain.User;
 import com.example.seoul.post.dto.PostDetailResponse;
 import com.example.seoul.post.dto.PostListResponse;
 import com.example.seoul.post.dto.PostRequest;
+import com.example.seoul.post.dto.PostResponse;
 import com.example.seoul.post.service.PostService;
 import com.example.seoul.user.request.LoginRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -62,4 +67,26 @@ public class PostController {
         return ResponseEntity.ok().build();
     }
 
+
+    @GetMapping("/mine")
+    @LoginCheck
+    public ResponseEntity<List<PostResponse>> getMyPosts(
+            @RequestParam(required = false) Long lastId,
+            HttpSession session
+    ) {
+        User user = (User) session.getAttribute("user");
+        List<PostResponse> posts = postService.getMyPosts(user.getId(), lastId);
+        return ResponseEntity.ok(posts);
+    }
+
+    @GetMapping("/liked")
+    @LoginCheck
+    public ResponseEntity<List<PostResponse>> getLikedPosts(
+            @RequestParam(required = false) Long lastId,
+            HttpSession session
+    ) {
+        User user = (User) session.getAttribute("user");
+        List<PostResponse> posts = postService.getLikedPosts(user.getId(), lastId);
+        return ResponseEntity.ok(posts);
+    }
 }

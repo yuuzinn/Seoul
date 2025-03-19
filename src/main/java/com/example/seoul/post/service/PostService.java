@@ -3,7 +3,10 @@ package com.example.seoul.post.service;
 import com.example.seoul.post.dto.PostDetailResponse;
 import com.example.seoul.post.dto.PostListResponse;
 import com.example.seoul.post.dto.PostRequest;
+import com.example.seoul.post.dto.PostResponse;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public interface PostService {
@@ -16,4 +19,8 @@ public interface PostService {
     PostListResponse getPosts(String subwayTag, Long lastPostId, int size);
 
     void deletePost(Long postId, Long userId);
+
+    List<PostResponse> getMyPosts(Long userId, Long lastId);
+
+    List<PostResponse> getLikedPosts(Long userId, Long lastId);
 }

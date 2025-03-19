@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -20,4 +21,12 @@ public interface LikesRepository extends JpaRepository<Likes, Long> {
     boolean existsByUserAndPost(User user, Post post);
 
     Optional<Likes> findByUserAndPost(User user, Post post);
+    @Query("""
+        SELECT l.post FROM Likes l
+        WHERE l.user.id = :userId
+        AND (:lastId IS NULL OR l.post.id < :lastId)
+        ORDER BY l.post.id DESC
+        LIMIT 10
+    """)
+    List<Post> findLikedPosts(@Param("userId") Long userId, @Param("lastId") Long lastId);
 }
