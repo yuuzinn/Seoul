@@ -1,24 +1,27 @@
 package com.example.seoul.subway.service;
 
 import com.example.seoul.domain.SubwayStation;
-import com.example.seoul.subway.repository.SubwayStationRepository;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.jdbc.core.BatchPreparedStatementSetter;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class SubwayStationService {
-    private final SubwayStationRepository subwayStationRepository;
+    private final JdbcTemplate jdbcTemplate;
     private final ObjectMapper objectMapper;
 
     @Value("${subway.api.key}")
@@ -30,7 +33,7 @@ public class SubwayStationService {
         String formattedUrl = String.format(API_URL, SUBWAY_KEY);
         String json = getJsonFromApi(formattedUrl);
         List<SubwayStation> stations = parseJson(json);
-        subwayStationRepository.saveAll(stations);
+        bulkInsertStations(stations);
     }
 
     private String getJsonFromApi(String apiUrl) throws Exception {
@@ -72,5 +75,24 @@ public class SubwayStationService {
             stationList.add(station);
         }
         return stationList;
+    }
+
+    private void bulkInsertStations(List<SubwayStation> stations) {
+        String sql = "INSERT INTO subway_station (station_id, station_name, line_number, latitude, longitude) VALUES (?, ?, ?, ?, ?)";
+        jdbcTemplate.batchUpdate(sql, new BatchPreparedStatementSetter() {
+            @Override
+            public void setValues(PreparedStatement ps, int i) throws SQLException {
+                SubwayStation station = stations.get(i);
+                ps.setString(1, station.getStationId());
+                ps.setString(2, station.getStationName());
+                ps.setString(3, station.getLineNumber());
+                ps.setDouble(4, station.getLatitude());
+                ps.setDouble(5, station.getLongitude());
+            }
+            @Override
+            public int getBatchSize() {
+                return stations.size();
+            }
+        });
     }
 }
