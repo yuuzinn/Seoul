@@ -13,7 +13,7 @@
 ![image](https://github.com/user-attachments/assets/17849ad2-ee12-47de-bbf8-d89ebe297964) <!-- 지하철역 검색 -->
 ![image](https://github.com/user-attachments/assets/1aeaa11e-667f-4935-91be-af39769c055a) <!-- 검색 & 위치기반 추천 -->
 ![image](https://github.com/user-attachments/assets/21101888-7e89-4d3b-950e-b1febfe1facc) <!-- 내 정보 -->
-![image](https://github.com/user-attachments/assets/5645b561-c49b-498b-bb10-cf96b1d069b3) <!-- 아키텍쳐 v1  -->
+![image](https://github.com/user-attachments/assets/e088ec9a-f272-4b89-bfdf-fed92bbb7917) <!-- 아키텍쳐 v1  -->
 
 - Stack
   - Java 21, Spring Boot 3.3.9, JPA, Spring Security Crypto, MariaDB, AWS S3, Open API
