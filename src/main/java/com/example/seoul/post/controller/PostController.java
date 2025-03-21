@@ -89,4 +89,16 @@ public class PostController {
         List<PostResponse> posts = postService.getLikedPosts(user.getId(), lastId);
         return ResponseEntity.ok(posts);
     }
+
+    @GetMapping("/search")
+    public ResponseEntity<PostListResponse> searchPosts(
+            @RequestParam String subway,
+            @RequestParam(required = false) List<String> tags,
+            @RequestParam(required = false, defaultValue = "latest") String sort,
+            @RequestParam(required = false) Long lastPostId,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        return ResponseEntity.ok(postService.searchPosts(subway, tags, sort, lastPostId, size));
+    }
+
 }

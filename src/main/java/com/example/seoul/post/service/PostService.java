@@ -23,4 +23,6 @@ public interface PostService {
     List<PostResponse> getMyPosts(Long userId, Long lastId);
 
     List<PostResponse> getLikedPosts(Long userId, Long lastId);
+
+    PostListResponse searchPosts(String subwayTag, List<String> tags, String sort, Long lastPostId, int size);
 }

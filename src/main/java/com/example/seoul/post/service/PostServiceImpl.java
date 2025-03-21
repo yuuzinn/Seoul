@@ -15,6 +15,7 @@ import com.example.seoul.tag.repository.TagRepository;
 import com.example.seoul.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -193,6 +194,34 @@ public class PostServiceImpl implements PostService {
     public List<PostResponse> getLikedPosts(Long userId, Long lastId) {
         List<Post> posts = likesRepository.findLikedPosts(userId, lastId);
         return posts.stream().map(PostResponse::fromEntity).collect(Collectors.toList());
+    }
+
+    @Override
+    public PostListResponse searchPosts(String subwayTag, List<String> tags, String sort, Long lastPostId, int size) {
+        Pageable pageable = PageRequest.of(0, size);
+
+        List<Post> posts;
+        if ("likes".equalsIgnoreCase(sort)) {
+            posts = postRepository.findPostsBySubwayTagAndTagsOrderByLikesDesc(
+                    subwayTag, tags, lastPostId, pageable
+            );
+        } else {
+            posts = postRepository.findPostsBySubwayTagAndTagsOrderByIdDesc(
+                    subwayTag, tags, lastPostId, pageable
+            );
+        }
+
+        List<PostSummaryResponse> postSummaries = posts.stream()
+                .map(post -> {
+                    String subwayTagFromDb = postTagRepository.findSubwayTagByPostId(post.getId());
+                    String thumbnail = postPlaceRepository.findFirstImageUrlByPost(post);
+                    List<String> moodTags = postTagRepository.findTagNamesByPostId(post.getId());
+                    return new PostSummaryResponse(post, subwayTagFromDb, thumbnail, moodTags);
+                })
+                .toList();
+
+        boolean hasNext = posts.size() == size;
+        return new PostListResponse(postSummaries, hasNext);
     }
 
 
