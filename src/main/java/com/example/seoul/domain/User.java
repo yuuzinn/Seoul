@@ -48,6 +48,9 @@ public class User {
     }
 
     // 닉네임 수정 등 메서드 추가 가능!
+    public void updatePassword(String newPassword) {
+        this.password = newPassword;
+    }
 }
 
 

@@ -18,6 +18,7 @@ public interface UserService {
 
 
     /**
-     * 회원탈퇴
+     * 비밀번호 변경
      */
+    void updatePassword(String email, String newPassword);
 }

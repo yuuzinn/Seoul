@@ -201,14 +201,17 @@ public class PostServiceImpl implements PostService {
         Pageable pageable = PageRequest.of(0, size);
 
         List<Post> posts;
+
+        boolean hasMoodTags = tags != null && !tags.isEmpty();
+
         if ("likes".equalsIgnoreCase(sort)) {
-            posts = postRepository.findPostsBySubwayTagAndTagsOrderByLikesDesc(
-                    subwayTag, tags, lastPostId, pageable
-            );
+            posts = hasMoodTags
+                    ? postRepository.findPostsBySubwayTagAndMoodTagsOrderByLikesDesc(subwayTag, tags, lastPostId, pageable)
+                    : postRepository.findPostsBySubwayTagOnlyOrderByLikesDesc(subwayTag, lastPostId, pageable);
         } else {
-            posts = postRepository.findPostsBySubwayTagAndTagsOrderByIdDesc(
-                    subwayTag, tags, lastPostId, pageable
-            );
+            posts = hasMoodTags
+                    ? postRepository.findPostsBySubwayTagAndMoodTagsOrderByIdDesc(subwayTag, tags, lastPostId, pageable)
+                    : postRepository.findPostsBySubwayTagOnlyOrderByIdDesc(subwayTag, lastPostId, pageable);
         }
 
         List<PostSummaryResponse> postSummaries = posts.stream()
@@ -223,6 +226,7 @@ public class PostServiceImpl implements PostService {
         boolean hasNext = posts.size() == size;
         return new PostListResponse(postSummaries, hasNext);
     }
+
 
 
     private void validateSubwayTag(String subwayTag) {

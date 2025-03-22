@@ -23,33 +23,56 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     """)
     List<Post> findMyPosts(@Param("userId") Long userId, @Param("lastId") Long lastId);
 
+    // 좋아요순 + mood 필터 있음
     @Query("""
-        SELECT DISTINCT p FROM Post p
-        JOIN PostTag pt1 ON pt1.post = p
-        WHERE (:lastPostId IS NULL OR p.id < :lastPostId)
-        AND pt1.tag.name = :subwayTag
-        AND NOT EXISTS (
-            SELECT 1 FROM PostTag pt2
-            WHERE pt2.post = p
-            AND pt2.tag.type = 'MOOD'
-            AND (:tags IS NOT EMPTY AND pt2.tag.name NOT IN (:tags))
-        )
-        ORDER BY p.likeCount DESC
-    """)
-    List<Post> findPostsBySubwayTagAndTagsOrderByLikesDesc(String subwayTag, List<String> tags, Long lastPostId, Pageable pageable);
+    SELECT DISTINCT p FROM Post p
+    JOIN PostTag pt1 ON pt1.post = p
+    WHERE (:lastPostId IS NULL OR p.id < :lastPostId)
+    AND pt1.tag.name = :subwayTag
+    AND EXISTS (
+        SELECT pt2 FROM PostTag pt2
+        WHERE pt2.post = p
+        AND pt2.tag.name IN :tags
+        AND pt2.tag.type = 'MOOD'
+    )
+    ORDER BY p.likeCount DESC
+""")
+    List<Post> findPostsBySubwayTagAndMoodTagsOrderByLikesDesc(String subwayTag, List<String> tags, Long lastPostId, Pageable pageable);
 
+    // 좋아요순 + mood 필터 없음
     @Query("""
-        SELECT DISTINCT p FROM Post p
-        JOIN PostTag pt1 ON pt1.post = p
-        WHERE (:lastPostId IS NULL OR p.id < :lastPostId)
-        AND pt1.tag.name = :subwayTag
-        AND NOT EXISTS (
-            SELECT 1 FROM PostTag pt2
-            WHERE pt2.post = p
-            AND pt2.tag.type = 'MOOD'
-            AND (:tags IS NOT EMPTY AND pt2.tag.name NOT IN (:tags))
-        )
-        ORDER BY p.id DESC
-    """)
-    List<Post> findPostsBySubwayTagAndTagsOrderByIdDesc(String subwayTag, List<String> tags, Long lastPostId, Pageable pageable);
+    SELECT DISTINCT p FROM Post p
+    JOIN PostTag pt1 ON pt1.post = p
+    WHERE (:lastPostId IS NULL OR p.id < :lastPostId)
+    AND pt1.tag.name = :subwayTag
+    ORDER BY p.likeCount DESC
+""")
+    List<Post> findPostsBySubwayTagOnlyOrderByLikesDesc(String subwayTag, Long lastPostId, Pageable pageable);
+
+    // 최신순 + mood 필터 있음
+    @Query("""
+    SELECT DISTINCT p FROM Post p
+    JOIN PostTag pt1 ON pt1.post = p
+    WHERE (:lastPostId IS NULL OR p.id < :lastPostId)
+    AND pt1.tag.name = :subwayTag
+    AND EXISTS (
+        SELECT pt2 FROM PostTag pt2
+        WHERE pt2.post = p
+        AND pt2.tag.name IN :tags
+        AND pt2.tag.type = 'MOOD'
+    )
+    ORDER BY p.id DESC
+""")
+    List<Post> findPostsBySubwayTagAndMoodTagsOrderByIdDesc(String subwayTag, List<String> tags, Long lastPostId, Pageable pageable);
+
+    // 최신순 + mood 필터 없음
+    @Query("""
+    SELECT DISTINCT p FROM Post p
+    JOIN PostTag pt1 ON pt1.post = p
+    WHERE (:lastPostId IS NULL OR p.id < :lastPostId)
+    AND pt1.tag.name = :subwayTag
+    ORDER BY p.id DESC
+""")
+    List<Post> findPostsBySubwayTagOnlyOrderByIdDesc(String subwayTag, Long lastPostId, Pageable pageable);
+
 }

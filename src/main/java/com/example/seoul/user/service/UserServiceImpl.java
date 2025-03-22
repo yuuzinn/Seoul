@@ -8,6 +8,7 @@ import com.example.seoul.user.request.SignUpRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 @Service
@@ -47,6 +48,17 @@ public class UserServiceImpl implements UserService{
         }
         return user.get();
     }
+
+    @Override
+    @Transactional
+    public void updatePassword(String email, String newPassword) {
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new CustomException(ErrorCode.NOT_FOUND_USER));
+
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        user.updatePassword(encodedPassword);
+    }
+
 
     public boolean isSamePassword(String password, String dbUserPassword) {
         return passwordEncoder.matches(password, dbUserPassword);
