@@ -11,7 +11,17 @@ import java.util.List;
 
 @Repository
 public interface PostRepository extends JpaRepository<Post, Long> {
-    @Query("SELECT p FROM Post p WHERE p.id < :lastPostId AND EXISTS (SELECT pt FROM PostTag pt WHERE pt.post = p AND pt.tag.type = 'SUBWAY' AND pt.tag.name = :subwayTag) ORDER BY p.id DESC")
+    @Query("""
+    SELECT p FROM Post p 
+    WHERE (:lastPostId IS NULL OR p.id < :lastPostId)
+    AND EXISTS (
+        SELECT pt FROM PostTag pt 
+        WHERE pt.post = p 
+        AND pt.tag.type = 'SUBWAY' 
+        AND pt.tag.name = :subwayTag
+    )
+    ORDER BY p.id DESC
+    """)
     List<Post> findPostsBySubwayTagAndPostIdLessThanOrderByPostIdDesc(@Param("subwayTag") String subwayTag, @Param("lastPostId") Long lastPostId, Pageable pageable);
 
     @Query("""
