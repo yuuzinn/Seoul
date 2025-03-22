@@ -1,13 +1,12 @@
 package com.example.seoul.tag.controller;
 
+import com.example.seoul.common.ApiResponse;
+import com.example.seoul.common.SuccessMessage;
 import com.example.seoul.domain.type.TagType;
 import com.example.seoul.tag.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -18,7 +17,8 @@ public class TagController {
     private final TagService tagService;
 
     @GetMapping
-    public ResponseEntity<List<String>> getTags(@RequestParam TagType type) {
-        return ResponseEntity.ok(tagService.getTagsByType(type));
+    public ResponseEntity<ApiResponse<List<String>>> getTags(@RequestParam TagType type) {
+        List<String> tags = tagService.getTagsByType(type);
+        return ApiResponse.success(SuccessMessage.SUCCESS_GET_TAGS, tags);
     }
 }

@@ -1,18 +1,14 @@
 package com.example.seoul.post.controller;
 
+import com.example.seoul.common.ApiResponse;
 import com.example.seoul.common.LoginCheck;
-import com.example.seoul.domain.Post;
+import com.example.seoul.common.SuccessMessage;
 import com.example.seoul.domain.User;
-import com.example.seoul.post.dto.PostDetailResponse;
-import com.example.seoul.post.dto.PostListResponse;
-import com.example.seoul.post.dto.PostRequest;
-import com.example.seoul.post.dto.PostResponse;
+import com.example.seoul.post.dto.*;
 import com.example.seoul.post.service.PostService;
-import com.example.seoul.user.request.LoginRequest;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,83 +18,93 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/post")
 public class PostController {
+
     private final PostService postService;
 
     @PostMapping
     @LoginCheck
-    public ResponseEntity<Object> createPost(
+    public ResponseEntity<ApiResponse<Long>> createPost(
             @RequestBody @Valid PostRequest request,
             HttpSession session) {
 
         User loginUser = (User) session.getAttribute("user");
-        Long userId = loginUser.getId();
+        Long postId = postService.createPost(request, loginUser.getId());
 
-        Long postId = postService.createPost(request, userId);
-        return ResponseEntity.ok(postId);
+        return ApiResponse.success(SuccessMessage.SUCCESS_CREATE_POST, postId);
     }
 
     @PutMapping("/{postId}")
     @LoginCheck
-    public ResponseEntity<Void> updatePost(@PathVariable Long postId,
-                                           @RequestBody @Valid PostRequest request,
-                                           HttpSession session) {
+    public ResponseEntity<ApiResponse<Void>> updatePost(
+            @PathVariable Long postId,
+            @RequestBody @Valid PostRequest request,
+            HttpSession session) {
+
         User user = (User) session.getAttribute("user");
         postService.updatePost(postId, user.getId(), request);
-        return ResponseEntity.ok().build();
-    }
 
-    @GetMapping("/{postId}")
-    public ResponseEntity<PostDetailResponse> getPostDetail(@PathVariable Long postId) {
-        return ResponseEntity.ok(postService.getPostDetail(postId));
-    }
-
-    @GetMapping
-    public ResponseEntity<PostListResponse> getPosts(@RequestParam String subway,
-                                                     @RequestParam(required = false) Long lastPostId,
-                                                     @RequestParam(defaultValue = "1") int size) {
-        return ResponseEntity.ok(postService.getPosts(subway, lastPostId, size));
+        return ApiResponse.success(SuccessMessage.SUCCESS_UPDATE_POST);
     }
 
     @DeleteMapping("/{postId}")
     @LoginCheck
-    public ResponseEntity<Void> deletePost(@PathVariable Long postId, HttpSession session) {
+    public ResponseEntity<ApiResponse<Void>> deletePost(
+            @PathVariable Long postId,
+            HttpSession session) {
+
         User user = (User) session.getAttribute("user");
         postService.deletePost(postId, user.getId());
-        return ResponseEntity.ok().build();
+
+        return ApiResponse.success(SuccessMessage.SUCCESS_DELETE_POST);
     }
 
+    @GetMapping("/{postId}")
+    public ResponseEntity<ApiResponse<PostDetailResponse>> getPostDetail(
+            @PathVariable Long postId) {
 
-    @GetMapping("/mine")
-    @LoginCheck
-    public ResponseEntity<List<PostResponse>> getMyPosts(
-            @RequestParam(required = false) Long lastId,
-            HttpSession session
-    ) {
-        User user = (User) session.getAttribute("user");
-        List<PostResponse> posts = postService.getMyPosts(user.getId(), lastId);
-        return ResponseEntity.ok(posts);
+        return ApiResponse.success(SuccessMessage.SUCCESS_GET_POST_DETAIL, postService.getPostDetail(postId));
     }
 
-    @GetMapping("/liked")
-    @LoginCheck
-    public ResponseEntity<List<PostResponse>> getLikedPosts(
-            @RequestParam(required = false) Long lastId,
-            HttpSession session
-    ) {
-        User user = (User) session.getAttribute("user");
-        List<PostResponse> posts = postService.getLikedPosts(user.getId(), lastId);
-        return ResponseEntity.ok(posts);
+    @GetMapping
+    public ResponseEntity<ApiResponse<PostListResponse>> getPosts(
+            @RequestParam String subway,
+            @RequestParam(required = false) Long lastPostId,
+            @RequestParam(defaultValue = "1") int size) {
+
+        return ApiResponse.success(SuccessMessage.SUCCESS_GET_POSTS, postService.getPosts(subway, lastPostId, size));
     }
 
     @GetMapping("/search")
-    public ResponseEntity<PostListResponse> searchPosts(
+    public ResponseEntity<ApiResponse<PostListResponse>> searchPosts(
             @RequestParam String subway,
             @RequestParam(required = false) List<String> tags,
             @RequestParam(required = false, defaultValue = "latest") String sort,
             @RequestParam(required = false) Long lastPostId,
-            @RequestParam(defaultValue = "10") int size
-    ) {
-        return ResponseEntity.ok(postService.searchPosts(subway, tags, sort, lastPostId, size));
+            @RequestParam(defaultValue = "10") int size) {
+
+        return ApiResponse.success(SuccessMessage.SUCCESS_SEARCH_POSTS,
+                postService.searchPosts(subway, tags, sort, lastPostId, size));
     }
 
+    @GetMapping("/mine")
+    @LoginCheck
+    public ResponseEntity<ApiResponse<List<PostResponse>>> getMyPosts(
+            @RequestParam(required = false) Long lastId,
+            HttpSession session) {
+
+        User user = (User) session.getAttribute("user");
+        return ApiResponse.success(SuccessMessage.SUCCESS_GET_MY_POSTS,
+                postService.getMyPosts(user.getId(), lastId));
+    }
+
+    @GetMapping("/liked")
+    @LoginCheck
+    public ResponseEntity<ApiResponse<List<PostResponse>>> getLikedPosts(
+            @RequestParam(required = false) Long lastId,
+            HttpSession session) {
+
+        User user = (User) session.getAttribute("user");
+        return ApiResponse.success(SuccessMessage.SUCCESS_GET_LIKED_POSTS,
+                postService.getLikedPosts(user.getId(), lastId));
+    }
 }

@@ -1,6 +1,8 @@
 package com.example.seoul.likes.controller;
 
+import com.example.seoul.common.ApiResponse;
 import com.example.seoul.common.LoginCheck;
+import com.example.seoul.common.SuccessMessage;
 import com.example.seoul.domain.User;
 import com.example.seoul.likes.service.LikesService;
 import lombok.RequiredArgsConstructor;
@@ -15,20 +17,19 @@ public class LikesController {
 
     @PostMapping("/{postId}/like")
     @LoginCheck
-    public ResponseEntity<Void> likePost(
+    public ResponseEntity<ApiResponse<Void>> likePost(
             @PathVariable Long postId,
             @SessionAttribute("user") User user) {
         likesService.likePost(user.getId(), postId);
-        return ResponseEntity.ok().build();
+        return ApiResponse.success(SuccessMessage.SUCCESS_LIKE_POST);
     }
 
     @DeleteMapping("/{postId}/like")
     @LoginCheck
-    public ResponseEntity<Void> unlikePost(
+    public ResponseEntity<ApiResponse<Void>> unlikePost(
             @PathVariable Long postId,
             @SessionAttribute("user") User user) {
         likesService.unlikePost(user.getId(), postId);
-        return ResponseEntity.ok().build();
+        return ApiResponse.success(SuccessMessage.SUCCESS_UNLIKE_POST);
     }
 }
-
