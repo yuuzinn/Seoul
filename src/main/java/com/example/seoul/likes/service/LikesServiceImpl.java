@@ -6,6 +6,7 @@ import com.example.seoul.domain.User;
 import com.example.seoul.exception.CustomException;
 import com.example.seoul.exception.ErrorCode;
 import com.example.seoul.likes.repository.LikesRepository;
+import com.example.seoul.notification.service.NotificationService;
 import com.example.seoul.post.repository.PostRepository;
 import com.example.seoul.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,7 @@ public class LikesServiceImpl implements LikesService{
     private final LikesRepository likesRepository;
     private final PostRepository postRepository;
     private final UserRepository userRepository;
+    private final NotificationService notificationService;
 
     @Transactional
     @Override
@@ -33,6 +35,11 @@ public class LikesServiceImpl implements LikesService{
 
         likesRepository.save(new Likes(user, post));
         post.increaseLikeCount();
+
+        // 알림 전송
+        if (!post.getUser().getId().equals(userId)) {
+            notificationService.notifyLike(post.getUser(), user, post);
+        }
     }
 
     @Transactional

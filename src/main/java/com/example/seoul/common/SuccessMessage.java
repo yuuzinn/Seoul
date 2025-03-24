@@ -45,7 +45,12 @@ public enum SuccessMessage {
      */
     SUCCESS_LIKE_POST(2023, "success_like_post"),
     SUCCESS_UNLIKE_POST(2024, "success_unlike_post"),
-
+    /**
+     * NOTIFICATION
+     */
+    SUCCESS_CHECK_UNREAD(2015, "success_check_unread"),
+    SUCCESS_GET_NOTIFICATIONS(2016, "success_get_notifications"),
+    SUCCESS_READ_NOTIFICATION(2017, "success_read_notification"),
     ;
 
     private final int code;

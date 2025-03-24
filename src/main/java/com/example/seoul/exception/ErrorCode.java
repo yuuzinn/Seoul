@@ -33,6 +33,7 @@ public enum ErrorCode {
     NOT_FOUND_PLACE(4002, HttpStatus.NOT_FOUND, "해당 장소를 찾을 수 없습니다."),
     NOT_FOUND_LIKES(4003, HttpStatus.NOT_FOUND, "좋아요를 누른 기록이 없습니다."),
     NOT_FOUND_SUBWAY(4004, HttpStatus.NOT_FOUND, "지하철역 명을 찾을 수 없습니다. [역]을 제외해주세요."),
+    NOT_FOUND_NOTIFICATION(4005, HttpStatus.NOT_FOUND, "해당 알림을 찾을 수 없습니다."),
     /**
      * 서버 에러
      */
