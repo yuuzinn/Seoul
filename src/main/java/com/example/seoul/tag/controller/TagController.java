@@ -12,11 +12,11 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/tags")
+@RequestMapping("/api/v1")
 public class TagController {
     private final TagService tagService;
 
-    @GetMapping
+    @GetMapping("/tags")
     public ResponseEntity<ApiResponse<List<String>>> getTags(@RequestParam TagType type) {
         List<String> tags = tagService.getTagsByType(type);
         return ApiResponse.success(SuccessMessage.SUCCESS_GET_TAGS, tags);

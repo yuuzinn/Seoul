@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/subway")
+@RequestMapping("/api/v1/subway")
 public class SubwayStationController {
 
     private final SubwayStationService subwayStationService;

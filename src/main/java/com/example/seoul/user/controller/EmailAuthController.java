@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/email-auth")
 public class EmailAuthController {
 
     private final EmailAuthClient emailAuthClient;

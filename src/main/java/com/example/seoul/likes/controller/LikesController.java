@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/posts")
+@RequestMapping("/api/v1/likes")
 public class LikesController {
     private final LikesService likesService;
 
-    @PostMapping("/{postId}/like")
+    @PostMapping("/{postId}")
     @LoginCheck
     public ResponseEntity<ApiResponse<Void>> likePost(
             @PathVariable Long postId,
@@ -24,7 +24,7 @@ public class LikesController {
         return ApiResponse.success(SuccessMessage.SUCCESS_LIKE_POST);
     }
 
-    @DeleteMapping("/{postId}/like")
+    @DeleteMapping("/{postId}")
     @LoginCheck
     public ResponseEntity<ApiResponse<Void>> unlikePost(
             @PathVariable Long postId,

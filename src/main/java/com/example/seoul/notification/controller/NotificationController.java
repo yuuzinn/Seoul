@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/notifications")
+@RequestMapping("/api/v1/noty")
 public class NotificationController {
 
     private final NotificationService notificationService;
@@ -44,7 +44,7 @@ public class NotificationController {
         return ApiResponse.success(SuccessMessage.SUCCESS_GET_NOTIFICATIONS, notifications);
     }
 
-    @PatchMapping("/{notificationId}/read")
+    @PatchMapping("/read/{notificationId}")
     @LoginCheck
     public ResponseEntity<ApiResponse<Void>> markAsRead(
             @PathVariable Long notificationId,

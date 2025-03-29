@@ -13,7 +13,7 @@ import org.springframework.web.servlet.view.RedirectView;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/kakao-auth")
 public class AuthController {
 
     @Value("${kakao.client-id}")
@@ -24,14 +24,14 @@ public class AuthController {
 
     private final AuthService authService;
 
-    @GetMapping("/kakao-login-url")
+    @GetMapping("/login-url")
     public String getKakaoLoginUrl() {
         return "https://kauth.kakao.com/oauth/authorize?client_id=" + clientId
                 + "&redirect_uri=" + redirectUri
                 + "&response_type=code";
     }
 
-    @GetMapping("/login/kakao")
+    @GetMapping("/login")
     public RedirectView kakaoLogin(@RequestParam("code") String code, HttpServletRequest request) {
         HttpSession session = request.getSession();
         User user = authService.kakaoLogin(code, session);
